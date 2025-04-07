@@ -1,0 +1,90 @@
+{
+  "type": "object",
+  "properties": {
+    "reasoning": {
+      "type": "object",
+      "properties": {
+        "query_analysis": {
+          "type": "object",
+          "properties": {
+            "user_query": {
+              "type": "string",
+              "description": "The original user query"
+            },
+            "query_interpretation": {
+              "type": "string",
+              "description": "Analysis of what the user is asking for"
+            }
+          },
+          "required": ["user_query", "query_interpretation"]
+        },
+        "information_search": {
+          "type": "object",
+          "properties": {
+            "search_strategy": {
+              "type": "string",
+              "description": "Description of how relevant information was searched across documents"
+            },
+            "relevant_documents": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "document_name": {
+                    "type": "string",
+                    "description": "Name of the document"
+                  },
+                  "pages": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Page numbers containing relevant information"
+                  },
+                  "relevance": {
+                    "type": "string",
+                    "description": "Why this document is relevant to the query"
+                  }
+                },
+                "required": ["document_name", "pages", "relevance"]
+              },
+              "description": "List of relevant documents and pages"
+            }
+          },
+          "required": ["search_strategy", "relevant_documents"]
+        }
+      },
+      "required": ["query_analysis", "information_search"]
+    },
+    "response": {
+      "type": "string",
+      "description": "Complete answer to the user query based on the found information"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "document_name": {
+            "type": "string",
+            "description": "Name of the document"
+          },
+          "pages": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Page numbers used"
+          },
+          "citation": {
+            "type": "string",
+            "description": "Quote or key information from this source"
+          }
+        },
+        "required": ["document_name", "pages"]
+      },
+      "description": "List of all sources used with page numbers"
+    }
+  },
+  "required": ["reasoning", "response", "sources"]
+} 
