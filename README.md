@@ -17,7 +17,7 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone <repository-url>
+git clone git@github.com:kekslop/vllm_structured_output_stream.git
 cd <repository-name>
 ```
 
