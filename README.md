@@ -1,6 +1,6 @@
 # RAG Stream Processor
 
-Проект для обработки запросов с использованием RAG (Retrieval-Augmented Generation) и потоковой передачи ответов от LLM API.
+Проект пример для обработки запросов от пользователей с использованием RAG (Retrieval-Augmented Generation) и потоковой передачи ответов от LLM API vLLM + Structured Output.
 
 ## Описание
 
