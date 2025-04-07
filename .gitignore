@@ -1,0 +1,50 @@
+# Конфигурационные файлы с конфиденциальными данными
+config.yaml
+
+# Директории с ответами и метриками
+responses/
+
+# Кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Виртуальные окружения
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# Логи и временные файлы
+*.log
+.DS_Store
+Thumbs.db
+
+# Файлы IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Файлы с личными данными
+*.key
+*.pem
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# Файлы с результатами выполнения
+*.csv
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.sqlite3
+
+# Файлы с большими данными
+*.zip
+*.tar.gz
+*.rar
+*.7z 

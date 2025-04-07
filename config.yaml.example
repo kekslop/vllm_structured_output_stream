@@ -1,0 +1,115 @@
+api:
+  base_url: "https://llm-core.neuraldeep.tech/v1/"  # Замените на ваш URL API
+  schema: "https"                                    # Схема API (http или https)
+  token: "your-api-token-here"                      # Замените на ваш токен API
+  model_name: "llama-3-8b-instruct-8k"             # Замените на название вашей модели
+  completion_tokens: 2000                           # Максимальное количество токенов для генерации
+
+messages:
+  system_template: |
+    Ты умный помощник, отвечай на вопросы согласно полученному контексту, если в полученном контексте нет информации, которая является ответом на вопрос пользователя, ответь что ты не знаешь ответа. Ты работаешь на базе технологий компании NDT 
+    You are an advanced document assistant that provides accurate, comprehensive answers based on the provided documents. Your task is to analyze the user's query, search through the available document pages, and formulate a detailed response with proper source attribution.
+    The reasoning and answer must be provided in the language of the query.
+
+    ## Input Information:
+    1. User query: The question or request from the user
+    2. Document pages: Content from various documents with page numbers and document names clearly marked
+
+    ## Your Process:
+    1. Carefully analyze the user's query to understand exactly what information they need
+    2. Thoroughly search through all provided document pages to find relevant information
+    3. Extract key facts and data points that address the query
+    4. Synthesize information from multiple sources when necessary
+    5. Formulate a comprehensive, accurate response
+    6. Clearly cite all sources used, including document names and page numbers
+
+    ## Guidelines:
+    - Be thorough in your search - don't miss relevant information
+    - Provide complete, detailed answers that fully address the user's query
+    - Only use information from the provided documents
+    - Never fabricate information or citations
+    - Maintain accuracy in your citations - reference specific page numbers
+    - When information appears in multiple documents, cite all relevant sources
+    - If the documents contain conflicting information, acknowledge this and explain the differences
+    - If the query cannot be answered with the provided documents, clearly state this
+
+    ## Response Format:
+    Your response must follow a specific structured format that includes:
+    1. Analysis of the query
+    2. Description of your search process
+    3. Formulation of your answer
+    4. The complete response to the user
+    5. A list of all sources used with proper citations
+
+    ### Context:
+    {context}
+
+  default_user_message: "Кто является председателем компании и какова его биография?"  # Замените на ваш запрос по умолчанию
+
+documents:
+  data_file: "rag_doc_data.json"  # Путь к файлу с данными документов
+
+response_schema:
+  type: "object"
+  properties:
+    reasoning:
+      type: "object"
+      properties:
+        query_analysis:
+          type: "object"
+          properties:
+            user_query:
+              type: "string"
+              description: "The original user query"
+            query_interpretation:
+              type: "string"
+              description: "Analysis of what the user is asking for"
+          required: ["user_query", "query_interpretation"]
+        information_search:
+          type: "object"
+          properties:
+            search_strategy:
+              type: "string"
+              description: "Description of how relevant information was searched across documents"
+            relevant_documents:
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  document_name:
+                    type: "string"
+                    description: "Name of the document"
+                  pages:
+                    type: "array"
+                    items:
+                      type: "integer"
+                    description: "Page numbers containing relevant information"
+                  relevance:
+                    type: "string"
+                    description: "Why this document is relevant to the query"
+                required: ["document_name", "pages", "relevance"]
+              description: "List of relevant documents and pages"
+          required: ["search_strategy", "relevant_documents"]
+      required: ["query_analysis", "information_search"]
+    response:
+      type: "string"
+      description: "Complete answer to the user query based on the found information"
+    sources:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          document_name:
+            type: "string"
+            description: "Name of the document"
+          pages:
+            type: "array"
+            items:
+              type: "integer"
+            description: "Page numbers used"
+          citation:
+            type: "string"
+            description: "Quote or key information from this source"
+        required: ["document_name", "pages"]
+      description: "List of all sources used with page numbers"
+  required: ["reasoning", "response", "sources"] 

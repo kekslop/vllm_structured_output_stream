@@ -1,0 +1,7 @@
+requests
+pyyaml
+python-dotenv
+openai
+tiktoken
+asyncio
+typing 
