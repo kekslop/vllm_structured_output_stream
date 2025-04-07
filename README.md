@@ -18,7 +18,9 @@
 1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/kekslop/vllm_structured_output_stream.git
-cd <repository-name>
+```
+```bash
+cd vllm_structured_output_stream
 ```
 
 2. Установите зависимости:
