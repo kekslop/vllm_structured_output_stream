@@ -8,8 +8,11 @@
 
 ## Структура проекта
 
-- `rag_stream_processor.py` - основной файл для обработки запросов с использованием RAG(захардкоженых данных) и потоковой передачи используя vLLM + SO streaming
+- `rag_stream_processor.py` - основной файл для обработки запросов с использованием RAG и потоковой передачи
+- `config_loader.py` - модуль для загрузки конфигурации из YAML файла
+- `prompt_manager.py` - модуль для работы с системными и пользовательскими сообщениями
 - `config.yaml` - файл конфигурации с настройками API и шаблонами сообщений
+- `config.yaml.example` - пример файла конфигурации
 - `rag_doc_data.json` - файл с данными документов в формате JSON
 - `requirements.txt` - список зависимостей проекта
 
@@ -17,8 +20,8 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone <repository-url>
-cd <repository-name>
+git clone https://github.com/kekslop/vllm_structured_output_stream.git
+cd vllm_structured_output_stream
 ```
 
 2. Установите зависимости:
@@ -46,12 +49,20 @@ cp config.yaml.example config.yaml
 Запустите основной скрипт с параметрами:
 
 ```bash
-python rag_stream_processor.py [--message-key KEY] [--stream]
+python rag_stream_processor.py [--message-key KEY] [--stream] [--app_config CONFIG_PATH]
 ```
 
 Параметры:
 - `--message-key` - ключ сообщения (опционально)
-- `--stream` - включить потоковую передачу (опционально)
+- `--stream` - включить потоковую передачу (по умолчанию включена)
+- `--app_config` - путь к файлу конфигурации (по умолчанию `config.yaml`)
+
+## Преимущества структуры проекта
+
+- Разделение кода на модули по функциональности
+- Использование `envyaml` для загрузки конфигурации с поддержкой переменных окружения
+- Отдельные функции для потокового и не-потокового режимов
+- Централизованная обработка конфигурации
 
 ## Лицензия
 
@@ -59,7 +70,7 @@ python rag_stream_processor.py [--message-key KEY] [--stream]
 
 MIT License
 
-Copyright (c) 2025 Neural Deep Tech
+Copyright (c) 2024 Neural Deep Tech
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

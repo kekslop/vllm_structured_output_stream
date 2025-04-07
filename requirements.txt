@@ -1,7 +1,7 @@
 requests
 pyyaml
 python-dotenv
-openai
-tiktoken
-asyncio
-typing 
+openai>=1.0.0
+tiktoken>=0.5.0
+envyaml>=1.10.0
+PyYAML>=6.0 
