@@ -1,6 +1,6 @@
 # RAG Stream Processor
 
-Проект для обработки запросов с использованием RAG (Retrieval-Augmented Generation) и потоковой передачи ответов от LLM API.
+Проект пример для обработки запросов от пользователей с использованием RAG (Retrieval-Augmented Generation) и потоковой передачи ответов от LLM API vLLM + Structured Output.
 
 ## Описание
 
@@ -23,6 +23,9 @@
 1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/kekslop/vllm_structured_output_stream.git
+```
+
+```bash
 cd vllm_structured_output_stream
 ```
 
