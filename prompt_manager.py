@@ -1,5 +1,18 @@
 import json
 
+def load_prompt_templates(file_path):
+    """
+    Загружает шаблоны промптов из JSON-файла.
+    
+    Args:
+        file_path: Путь к файлу с шаблонами промптов
+        
+    Returns:
+        Словарь с шаблонами промптов
+    """
+    with open(file_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
 def get_system_message(config):
     """
     Возвращает форматированное системное сообщение с контекстом документов.
@@ -10,15 +23,20 @@ def get_system_message(config):
     Returns:
         Отформатированное системное сообщение
     """
+    # Загружаем шаблоны промптов
+    templates_file = config.messages_config.get('templates_file', 'prompt_templates.json')
+    templates = load_prompt_templates(templates_file)
+    
     # Загружаем данные документов из указанного файла
-    with open(config.documents_config.get('data_file', 'rag_doc_data.json'), 'r', encoding='utf-8') as f:
+    docs_file = config.documents_config.get('data_file', 'rag_doc_data.json')
+    with open(docs_file, 'r', encoding='utf-8') as f:
         doc_data = json.load(f)
     
     # Форматируем данные документов как строку
     doc_context = json.dumps(doc_data, ensure_ascii=False)
     
     # Возвращаем системное сообщение с подставленным контекстом
-    system_template = config.messages_config.get('system_template', '')
+    system_template = templates.get('system_template', '')
     return system_template.format(context=doc_context)
 
 def get_user_message(config, message_key=None):
@@ -32,8 +50,20 @@ def get_user_message(config, message_key=None):
     Returns:
         Выбранное сообщение или сообщение по умолчанию
     """
-    # Всегда возвращаем сообщение по умолчанию из конфигурации
-    return config.messages_config.get('default_user_message', '')
+    # Загружаем шаблоны промптов
+    templates_file = config.messages_config.get('templates_file', 'prompt_templates.json')
+    templates = load_prompt_templates(templates_file)
+    
+    # Проверяем, указан ли message_key в конфигурации, если не указан в аргументах
+    if message_key is None:
+        message_key = config.messages_config.get('message_key')
+    
+    # Если ключ указан и существует в списке сообщений, возвращаем соответствующее сообщение
+    if message_key and 'user_messages' in templates and message_key in templates['user_messages']:
+        return templates['user_messages'][message_key]
+    
+    # Иначе возвращаем сообщение по умолчанию
+    return templates.get('default_user_message', '')
 
 def prepare_messages(config, message_key=None):
     """

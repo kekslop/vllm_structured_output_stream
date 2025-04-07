@@ -34,6 +34,12 @@ def get_config(argv=None):
     args.api_config = config_yaml.get('api', {})
     args.messages_config = config_yaml.get('messages', {})
     args.documents_config = config_yaml.get('documents', {})
-    args.response_schema = config_yaml.get('response_schema', {})
+    args.response_config = config_yaml.get('response', {})
+    
+    # Если указан message_key в аргументах командной строки, переопределяем его в конфигурации
+    if args.message_key:
+        if not hasattr(args, 'messages_config'):
+            args.messages_config = {}
+        args.messages_config['message_key'] = args.message_key
     
     return args 

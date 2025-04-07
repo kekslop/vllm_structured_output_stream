@@ -354,8 +354,17 @@ async def send_llm_request(config, message_key=None, stream=True):
     model_name = api_config.get('model_name', '')
     completion_tokens = api_config.get('completion_tokens', 2000)
     
-    # Получаем схему ответа из конфигурации
-    response_schema = config.response_schema
+    # Получаем настройки ответа из конфигурации
+    response_config = config.response_config if hasattr(config, 'response_config') else {}
+    
+    # Загружаем схему ответа из файла
+    schema_file = response_config.get('schema_file', 'response_schema.json')
+    with open(schema_file, 'r', encoding='utf-8') as f:
+        response_schema = json.load(f)
+    
+    # Получаем дополнительные параметры декодирования
+    guided_decoding_backend = response_config.get('guided_decoding_backend', 'xgrammar')
+    repetition_penalty = response_config.get('repetition_penalty', 1.0)
     
     # Подготавливаем клиент
     client = AsyncOpenAI(
@@ -365,9 +374,9 @@ async def send_llm_request(config, message_key=None, stream=True):
     
     # Экстра-параметры с схемой
     extra_body = {
-        "repetition_penalty": 1,
+        "repetition_penalty": repetition_penalty,
         "guided_json": json.dumps(response_schema),
-        "guided_decoding_backend": "xgrammar"
+        "guided_decoding_backend": guided_decoding_backend
     }
     
     # Выводим информацию о запросе
