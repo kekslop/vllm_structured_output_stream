@@ -1,6 +1,6 @@
-# RAG Stream Processor
+#SO + CoT RAG Stream Processor
 
-Проект пример для обработки запросов от пользователей с использованием RAG (Retrieval-Augmented Generation) и потоковой передачи ответов от LLM API vLLM + Structured Output.
+Проект пример для обработки запросов от пользователей с использованием RAG (Retrieval-Augmented Generation) и потоковой передачи ответов от LLM API vLLM + Structured Output + Chain of though.
 
 ## Описание
 
